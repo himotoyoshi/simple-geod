@@ -1,11 +1,11 @@
-Geod 
-=====
+Simple Geod
+===========
 
 A Ruby wrapper of geodesic.c
 
 ### Installation
 
-    gem install geod
+    gem install simple-geod
 
 ### Description
 
