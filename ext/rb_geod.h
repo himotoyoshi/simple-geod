@@ -13,12 +13,12 @@ typedef struct {
 
 typedef struct {
   struct geod_polygon *ref;
-} Polygon;
+} GeodPolygon;
 
 extern VALUE rb_mGeod;
 extern VALUE rb_cGeodesic;
 extern VALUE rb_cGeodesicline;
-extern VALUE rb_cPolygon;
+extern VALUE rb_cGeodPolygon;
 
 #endif
 

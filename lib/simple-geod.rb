@@ -20,6 +20,16 @@ class GEOD
     return distance(lat1, lon1, lat2, lon2)
   end
 
+  def measure_polygon (lats, lons)
+    if lats.size != lons.size
+      raise "lon list and lat list should has same length."
+    end
+    if lats.size < 3
+      raise "lon list and lat list should include at least 3 points."
+    end
+    return *_measure_polygon(lats.pack("d*"), lons.pack("d*"), lats.size)
+  end
+
   def geodline (lat0, lon0, lat1, lon1, count: nil, interval: nil)
 
     total_geod_S, az12, az21 = self.inverse(lat0, lon0, lat1, lon1)
