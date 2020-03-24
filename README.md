@@ -3,10 +3,6 @@ Simple Geod
 
 A Ruby wrapper of geodesic.c
 
-### Installation
-
-    gem install simple-geod
-
 ### Description
 
 This is a Ruby wrapper of Charles Karney's [`geodesic.c` (Geodesic routines implemented in C)](https://geographiclib.sourceforge.io/html/C/), which is a part of GeographicLib and is also included in PROJ.4. 
@@ -14,6 +10,9 @@ This is a Ruby wrapper of Charles Karney's [`geodesic.c` (Geodesic routines impl
 Currently, this library wraps two functions `geod_direct` and `geod_inverse` in `geodesic.c`.
 It provides the geodesic calculation between two geographic points.
 
+### Installation
+
+    gem install simple-geod
 
 ### Todo
 
