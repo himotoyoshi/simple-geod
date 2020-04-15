@@ -33,7 +33,6 @@ class GEOD
   def geodline (lat0, lon0, lat1, lon1, count: nil, interval: nil)
 
     total_geod_S, az12, az21 = self.inverse(lat0, lon0, lat1, lon1)
-    total_geod_S *= @fr_meter
 
     if not count.nil? and interval.nil?
       del_S = total_geod_S / ( count - 1 )
@@ -44,11 +43,11 @@ class GEOD
     end
 
     list = []
-    list.push [lon0, lat0, 0]
+    list.push [lat0, lon0, 0]
     
     geod_S = del_S
     loop do 
-      lat, lon, az21 = self.forward(lat0, lon0, az12, geod_S*@to_meter)
+      lat, lon, az21 = self.direct(lat0, lon0, az12, geod_S)
       list.push [lat, lon, geod_S]
       geod_S += del_S
       if geod_S >= total_geod_S
@@ -64,7 +63,7 @@ class GEOD
   alias geodline_latlon geodline
 
   def geodline_lonlat (lon0, lat0, lon1, lat1, count: nil, interval: nil)
-    return geodline(lat0, lon0, lat1, lon1, count: nil, interval: nil)
+    return geodline(lat0, lon0, lat1, lon1, count: nil, interval: nil).map{|e1,e2,e3| [e2,e1,e3]}
   end
 
 end
