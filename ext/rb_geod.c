@@ -1,11 +1,26 @@
 #include "ruby.h"
 #include "rb_geod.h"
 
+void free_geodesic (void *ap);
+
+const rb_data_type_t geod_data_type = {
+    .parent = NULL,
+    .wrap_struct_name = "Geod",
+    .function = {
+        .dmark = NULL, 
+        .dfree = free_geodesic,
+        .dsize = NULL,
+        .dcompact = NULL
+    },
+    .flags = RUBY_TYPED_FREE_IMMEDIATELY,
+};
+
 VALUE rb_cGeodesic;
 
-static void 
-free_geodesic (Geodesic *geodesic)
+void 
+free_geodesic (void *ap)
 {
+  Geodesic *geodesic = ap;
   if ( geodesic->ref ) {
     free(geodesic->ref);
   }
@@ -16,7 +31,7 @@ static VALUE
 rb_geodesic_s_allocate (VALUE klass)
 {
   Geodesic *geodesic;
-  return Data_Make_Struct(klass, Geodesic, 0, free_geodesic, geodesic);
+  return TypedData_Make_Struct(klass, Geodesic, &geod_data_type, geodesic);
 }
 
 /*
@@ -40,7 +55,7 @@ rb_geodesic_initialize (int argc, VALUE *argv, VALUE self)
   if ( NIL_P(rf) ) {
     rf = rb_float_new(1.0/298.257223563); /* WGS84 : default */    
   }
-  Data_Get_Struct(self, Geodesic, geodesic);
+  TypedData_Get_Struct(self, Geodesic, &geod_data_type, geodesic);
   geodesic->ref = ALLOC(struct geod_geodesic);
   geod_init(geodesic->ref, NUM2DBL(ra), NUM2DBL(rf));
   return Qnil;
@@ -69,7 +84,7 @@ rb_geodesic_inverse (VALUE self, VALUE vl1, VALUE vp1, VALUE vl2, VALUE vp2)
 {
   Geodesic *geodesic;
   double ps12, paz12, paz21;
-  Data_Get_Struct(self, Geodesic, geodesic);
+  TypedData_Get_Struct(self, Geodesic, &geod_data_type, geodesic);
   geod_inverse(geodesic->ref, 
                      NUM2DBL(vl1), 
                      NUM2DBL(vp1), 
@@ -95,7 +110,7 @@ rb_geodesic_distance (VALUE self, VALUE vl1, VALUE vp1, VALUE vl2, VALUE vp2)
 {
   Geodesic *geodesic;
   double ps12;
-  Data_Get_Struct(self, Geodesic, geodesic);
+  TypedData_Get_Struct(self, Geodesic, &geod_data_type, geodesic);
   geod_inverse(geodesic->ref,
                 NUM2DBL(vl1), NUM2DBL(vp1), NUM2DBL(vl2), NUM2DBL(vp2),
                 &ps12, 0, 0);
@@ -125,7 +140,7 @@ rb_geodesic_direct (VALUE self, VALUE vlat1, VALUE vlon1, VALUE vaz, VALUE vdist
 {
   Geodesic *geodesic;
   double l2, p2, az21;
-  Data_Get_Struct(self, Geodesic, geodesic);
+  TypedData_Get_Struct(self, Geodesic, &geod_data_type, geodesic);
   geod_direct(geodesic->ref,
                      NUM2DBL(vlat1), NUM2DBL(vlon1), NUM2DBL(vaz), NUM2DBL(vdist), 
                      &l2, &p2, &az21);
@@ -143,7 +158,7 @@ rb_geodesic_measure_polygon (VALUE self, VALUE vlats, VALUE vlons, VALUE vn)
   int n;
   double *lats, *lons;
   double area, perimeter;
-  Data_Get_Struct(self, Geodesic, geodesic);
+  TypedData_Get_Struct(self, Geodesic, &geod_data_type, geodesic);
   lats = (double*)StringValuePtr(vlats);
   lons = (double*)StringValuePtr(vlons);
   n = NUM2INT(vn);

@@ -1,5 +1,5 @@
 Gem::Specification::new do |s|
-  version = "1.0.0"
+  version = "1.2.1"
   files = Dir.glob("**/*") - [ 
                                Dir.glob("simple-geod-*.gem"), 
                              ].flatten

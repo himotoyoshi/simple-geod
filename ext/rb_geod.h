@@ -15,6 +15,8 @@ typedef struct {
   struct geod_polygon *ref;
 } GeodPolygon;
 
+extern const rb_data_type_t geod_data_type;
+
 extern VALUE rb_mGeod;
 extern VALUE rb_cGeodesic;
 extern VALUE rb_cGeodesicline;

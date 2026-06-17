@@ -67,3 +67,9 @@ class GEOD
   end
 
 end
+
+begin
+  require "simple-geod-carray"
+rescue LoadError
+end
+  
