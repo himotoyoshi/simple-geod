@@ -12,8 +12,8 @@ Gem::Specification::new do |s|
   HERE
   s.version     = version
   s.licenses    = ['MIT']
-  s.author      = "Hiroki Motoyoshi"
-  s.email       = ""
+  s.authors      = ["himotoyoshi"]
+  s.email       = ["himotoyoshi@users.noreply.github.com"]
   s.homepage    = 'https://github.com/himotoyoshi/simple-geod'
   s.files       = files
   s.extensions  = [ "ext/extconf.rb" ]
